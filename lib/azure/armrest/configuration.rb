@@ -309,7 +309,7 @@ module Azure
           )
         )
 
-        @token = 'Bearer ' + response['access_token']
+        @token = "Bearer #{response['access_token']}"
         @token_expiration = Time.now.utc + response['expires_in'].to_i
 
         self.class.cache_token(self)
