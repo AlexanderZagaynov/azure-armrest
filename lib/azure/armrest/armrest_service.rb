@@ -202,6 +202,9 @@ module Azure
         status
       end
 
+      EMPTY_PAYLOAD = ''.encode('utf-8').freeze
+      private_constant :EMPTY_PAYLOAD
+
       class << self
         private
 
@@ -209,6 +212,7 @@ module Azure
           tries ||= 0
           url = encode ? Addressable::URI.encode(options[:url]) : options[:url]
           options = options.merge(:method => http_method, :url => url)
+          options[:payload] ||= EMPTY_PAYLOAD # prevent US-ASCII request and ASCII-8BIT response
           RestClient::Request.execute(options)
         rescue RestClient::Exception => err
           if [409, 429, 500, 502, 503, 504].include?(err.http_code)
